@@ -30,4 +30,4 @@ def createDataBaseFromFiles():
     # print(fileheaders)
 
 
-createDataBaseFromFiles()
+# createDataBaseFromFiles()

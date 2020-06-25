@@ -44,7 +44,9 @@ def sortAllFactions():
             if (child.suffixes[0] == ".txt"):
                 rewrite(str(child))
         except IndexError as error:
-            print(error)
+            print(error, "for: ", child)
+
+# sortAllFactions()
 
 # sorts one faction
 # takes in the faction shorthand
@@ -57,4 +59,7 @@ def sortFaction(faction):
 def findPath(faction):
     path = str(pathlib.Path(__file__).parent)
     file = f"{path}/{faction}.txt"
-    return(file)
+    if pathlib.Path(file).exists():
+        return(file)
+    else:
+        raise Exception("File doesn't exist")
