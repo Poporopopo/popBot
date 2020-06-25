@@ -2,7 +2,7 @@ import json, sqlite3, pathlib
 from textStorage import sorting
 
 path = str(pathlib.Path(__file__).parent) + "/aliases.json"
-print(path)
+# print(path)
 aliasfile = open(path, "r")
 
 # determines if input matches available search terms
@@ -18,16 +18,21 @@ def parseAliases(input):
             return alias
     raise Exception(f"{input} not found in aliases")
 
-# print (parseAliases("DE"))
-# print (parseAliases("USN"))
-# print (parseAliases("burger"))
-# sorting.sortFaction("DE")
+# database constants
+database = sqlite3.connect("popBot.db")
 
-def createDataBaseFromFiles():
+def createFactionTable():
+    # create table if not exists
+    database.create
+
     # get filenames of faction. ie: "EU"
     factionAliases = json.load(aliasfile)["faction"]
     fileheaders = (factionAliases.keys())
     # print(fileheaders)
 
-
-# createDataBaseFromFiles()
+    # get paths for factions
+    for fileheader in fileheaders:
+        filename = sorting.findPath(fileheader)
+        print (filename)
+        filecontent = sorting.parseText(filename)
+        print (filecontent)

@@ -128,5 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-#tempfolder
+# tempfolder
 temp/
+
+# databases
+popBot.db
