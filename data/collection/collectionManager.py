@@ -1,9 +1,9 @@
 import json, sqlite3, pathlib
 from textStorage import sorting
 
-path = str(pathlib.Path(__file__).parent) + "/aliases.json"
+parentpath = str(pathlib.Path(__file__).parent)
 # print(path)
-aliasfile = open(path, "r")
+aliasfile = open(parentpath  + "/aliases.json", "r")
 
 # determines if input matches available search terms
 def parseAliases(input):
@@ -19,11 +19,20 @@ def parseAliases(input):
     raise Exception(f"{input} not found in aliases")
 
 # database constants
-database = sqlite3.connect("popBot.db")
+database = sqlite3.connect(parentpath + "/popBot.db")
 
 def createFactionTable():
     # create table if not exists
-    database.create
+    cursor = database.cursor()
+    cursor.execute(
+        "CREATE TABLE IF NOT EXISTS shipgirl_items("
+            "name text,"
+            "faction text,"
+            "shiptype text,"
+            "currentuser text,"
+            "uses int"
+        ")"
+    )
 
     # get filenames of faction. ie: "EU"
     factionAliases = json.load(aliasfile)["faction"]
@@ -32,7 +41,11 @@ def createFactionTable():
 
     # get paths for factions
     for fileheader in fileheaders:
+        # read file factions
         filename = sorting.findPath(fileheader)
-        print (filename)
+        # print (filename)
         filecontent = sorting.parseText(filename)
-        print (filecontent)
+        # print (filecontent)
+        
+
+createFactionTable()
