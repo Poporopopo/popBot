@@ -29,7 +29,7 @@ def reassemble(string, output):
     return
 
 # rewrites text file alphabetically sorted
-def rewrite(filename):
+def rewritetxt(filename):
     parsed = parseText(filename)
     parsed.sort()
     with open(filename, "w") as writer:
@@ -37,28 +37,30 @@ def rewrite(filename):
             writer.write(line + "\n")
 
 # finds all factions and sorts them in the text file
-def sortAllFactions():
-    path = pathlib.Path(__file__).parent
+def sortAllFactionsTxt():
+    path = pathlib.Path(__file__ + "/txt")
     for child in path.iterdir():
         try:
             if (child.suffixes[0] == ".txt"):
-                rewrite(str(child))
+                rewritetxt(str(child))
         except IndexError as error:
             print(error, "for: ", child)
 
-# sortAllFactions()
+def createAllFactionsCSV():
+    return
 
 # sorts one faction
 # takes in the faction shorthand
-def sortFaction(faction):
-    file = findPath(faction)
-    rewrite(file)
+def sortFaction(faction, filetype):
+    file = findPath(faction, filetype)
+    rewritetxt(file)
 
 # finds the faction file depending on the faction name
 # throws error if file doesn't exist
-def findPath(faction):
+def findPath(faction, filetype):
     path = str(pathlib.Path(__file__).parent)
-    file = f"{path}/{faction}.txt"
+    file = f"{path}/{filetype}/{faction}.{filetype}"
+    print(file)
     if pathlib.Path(file).exists():
         return(file)
     else:

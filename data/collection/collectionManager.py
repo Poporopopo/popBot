@@ -1,5 +1,5 @@
 import json, sqlite3, pathlib
-from textStorage import sorting
+from hardFiles import sorting
 
 parentpath = str(pathlib.Path(__file__).parent)
 # print(path)
@@ -46,6 +46,6 @@ def createFactionTable():
         # print (filename)
         filecontent = sorting.parseText(filename)
         # print (filecontent)
-        
+
 
 createFactionTable()
