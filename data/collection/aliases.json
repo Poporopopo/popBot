@@ -1,0 +1,58 @@
+{
+  "faction":
+  {
+    "DE":
+    [
+      "PRAN",
+      "ROC",
+      "Dragon Empery"
+    ],
+    "EU":
+    [
+      "USS",
+      "USN",
+      "Eagle Union"
+    ],
+    "Event":
+    [
+      "Event"
+    ],
+    "IB":
+    [
+      "KMS",
+      "Iron Blood"
+    ],
+    "IL":
+    [
+      "FFNF",
+      "Iris Libre"
+    ],
+    "NP":
+    [
+      "SN",
+      "Northern Parliament",
+      "Vodka"
+    ],
+    "RN":
+    [
+      "HMS",
+      "Royal Navy"
+    ],
+    "SDE":
+    [
+
+      "Scardegnia Empire",
+      "Spaghetti"
+    ],
+    "SE":
+    [
+      "IJN",
+      "Sakura Empire"
+    ],
+    "VD":
+    [
+      "MNF",
+      "Vichya Dominion"
+    ]
+  }
+}
