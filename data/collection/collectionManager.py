@@ -1,10 +1,13 @@
-import json, sqlite3
+import json, sqlite3, pathlib
 from textStorage import sorting
+
+path = str(pathlib.Path(__file__).parent) + "/aliases.json"
+print(path)
+aliasfile = open(path, "r")
 
 # determines if input matches available search terms
 def parseAliases(input):
-    filereader = open("aliases.json", "r")
-    factionAliases = json.load(filereader)["faction"]
+    factionAliases = json.load(aliasfile)["faction"]
     aliases = (factionAliases.keys())
     # print(aliases)
     # print(input in aliases)
@@ -18,5 +21,13 @@ def parseAliases(input):
 # print (parseAliases("DE"))
 # print (parseAliases("USN"))
 # print (parseAliases("burger"))
+# sorting.sortFaction("DE")
 
-sorting.sortFaction("DE")
+def createDataBaseFromFiles():
+    # get filenames of faction. ie: "EU"
+    factionAliases = json.load(aliasfile)["faction"]
+    fileheaders = (factionAliases.keys())
+    # print(fileheaders)
+
+
+createDataBaseFromFiles()

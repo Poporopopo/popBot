@@ -28,6 +28,7 @@ def reassemble(string, output):
         output.append(assembly)
     return
 
+# rewrites text file alphabetically sorted
 def rewrite(filename):
     parsed = parseText(filename)
     parsed.sort()
@@ -35,6 +36,7 @@ def rewrite(filename):
         for line in parsed:
             writer.write(line + "\n")
 
+# finds all factions and sorts them in the text file
 def sortAllFactions():
     path = pathlib.Path(__file__).parent
     for child in path.iterdir():
@@ -44,10 +46,14 @@ def sortAllFactions():
         except IndexError as error:
             print(error)
 
+# sorts one faction
+# takes in the faction shorthand
 def sortFaction(faction):
     file = findPath(faction)
     rewrite(file)
 
+# finds the faction file depending on the faction name
+# throws error if file doesn't exist
 def findPath(faction):
     path = str(pathlib.Path(__file__).parent)
     file = f"{path}/{faction}.txt"
