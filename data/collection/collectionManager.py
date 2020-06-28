@@ -3,12 +3,10 @@ import json, sqlite3, pathlib, csv
 parentpath = str(pathlib.Path(__file__).parent)
 
 # determines if input matches available search terms
-def parseAliases(input):
+def parseAliases(input, aliasGroup):
     aliasfile = open(parentpath  + "/aliases.json", "r")
-    factionAliases = json.load(aliasfile)["faction"]
+    factionAliases = json.load(aliasfile)[aliasGroup]
     aliases = (factionAliases.keys())
-    # print(aliases)
-    # print(input in aliases)
     if (input in aliases):
         return input
     for alias in aliases:
@@ -21,21 +19,21 @@ def readItemCollection():
     collectionreader = csv.reader(collectioncsv)
     items = []
     for item in collectionreader:
-        print(item)
         items.append(item)
     return items
 
-print(readItemCollection())
-
 # database constants
-database = sqlite3.connect(parentpath + "/popBot.db")
+databasePath = (parentpath + "/popBot.db")
 
 def createFactionTable():
-    # create table if not exists
+    # database connection
+    database = sqlite3.connect(databasePath)
     cursor = database.cursor()
+
+    # create table if not exists
     cursor.execute(
         "CREATE TABLE IF NOT EXISTS shipgirl_items("
-            "name text,"
+            "name text UNIQUE,"
             "faction text,"
             "shiptype text,"
             "currentuser text,"
@@ -43,6 +41,17 @@ def createFactionTable():
         ")"
     )
 
-    # get filenames of faction. ie: "EU"
-    factionAliases = json.load(aliasfile)["faction"]
-    fileheaders = (factionAliases.keys())
+    # add items to database
+    collection = readItemCollection()
+    for item in collection:
+        try:
+            cursor.execute(
+                "INSERT INTO shipgirl_items VALUES (?, ?, ?, '', 0)",
+                (item[0], item[1], item[2])
+            )
+        except sqlite3.IntegrityError as error:
+            error
+
+    # close database connection
+    database.commit()
+    database.close()
