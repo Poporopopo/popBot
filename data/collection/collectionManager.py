@@ -1,5 +1,4 @@
-import json, sqlite3, pathlib
-from hardFiles import sorting
+import json, sqlite3, pathlib, csv
 
 parentpath = str(pathlib.Path(__file__).parent)
 
@@ -18,7 +17,15 @@ def parseAliases(input):
     raise Exception(f"{input} not found in aliases")
 
 def readItemCollection():
-    return
+    collectioncsv = open(parentpath + "/collection.csv", "r")
+    collectionreader = csv.reader(collectioncsv)
+    items = []
+    for item in collectionreader:
+        print(item)
+        items.append(item)
+    return items
+
+print(readItemCollection())
 
 # database constants
 database = sqlite3.connect(parentpath + "/popBot.db")
