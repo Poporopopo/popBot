@@ -1,5 +1,6 @@
-import discord
+import discord, pathlib
 
+file_parent_location = str(pathlib.Path(__file__).parent)
 client = discord.Client()
 
 #  callback: happens when an event happens
@@ -20,9 +21,7 @@ async def on_message(message):
     if message.content.startswith('$hello'):
         await message.channel.send('Hello!')
 
-    #experimental alt key
-    if message.content.startswith('popbot'):
-        await message.channel.send('pop hello')
-
 bot_token = ""
+with open(file_parent_location + "/data/bot_token.txt", "r") as tokenfile:
+    bot_token = tokenfile.readline()
 client.run(bot_token)

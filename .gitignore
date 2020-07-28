@@ -128,8 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# tempfolder
-temp/
+# token file
+bot_token.txt
 
 # databases
 popBot.db
