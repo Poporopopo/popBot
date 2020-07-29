@@ -70,11 +70,30 @@ sessions = {}
 async def open(ctx):
     # shows the channel marked
     channel = ctx.channel
-    sessions[channel.id] = [[],[]]
+    all_sessions = sessions.keys()
+    if (channel.id not in all_sessions):
+        sessions[channel.id] = [[],[]]
+        await ctx.send(f'Session has been opened in {channel}.')
+    else:
+        await ctx.send(f'Session is already open in {channel}.')
     print (sessions)
-    await ctx.send(f'Session has been opened in {channel}')
+    print()
 
+# unmarks channel as open session
+@bot.command()
+async def close(ctx):
+    channel = ctx.channel
+    try:
+        # pauses session and checks for title
+        # records information from session
 
+        # removes from sessions list
+        del sessions[channel.id]
+        await ctx.send(f'Session has been closed in {channel}.')
+    except KeyError:
+        await ctx.send(f'Session is already closed in {channel}.')
+    print (sessions)
+    print ()
 
 # run section; must be at end
 bot.run(bot_token)
