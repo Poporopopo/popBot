@@ -28,25 +28,25 @@ async def on_message(message):
     # if message.author.name == "Poporopopo":
     #     return
 
-    message_context = await bot.get_context(message)
-    message_author = message_context.author
-    message_author_name = message_author.name
-    # message_author_nickname = message_author.nick
-
-    # context is immutable
-    # try:
-    #      message_author.bot = False
-    # except Exception as error:
-    #     print (error)
-
-    message_author_isBot = message_author.bot
-    print (message_context)
-    print (message_author)
-    print (message_author_name)
-    # print (message_author_nickname)
-    print (message_author_isBot)
-    print()
-    #ignores bots
+    # message_context = await bot.get_context(message)
+    # message_author = message_context.author
+    # message_author_name = message_author.name
+    # # message_author_nickname = message_author.nick
+    #
+    # # context is immutable
+    # # try:
+    # #      message_author.bot = False
+    # # except Exception as error:
+    # #     print (error)
+    #
+    # message_author_isBot = message_author.bot
+    # print (message_context)
+    # print (message_author)
+    # print (message_author_name)
+    # # print (message_author_nickname)
+    # print (message_author_isBot)
+    # print()
+    # #ignores bots
     await bot.process_commands(message)
 
 # commands section
@@ -63,17 +63,16 @@ async def test(ctx):
         print ()
 
 # tracks sessions based on channels
-sessions = []
+sessions = {}
 
 # marks the channel as an open session
 @bot.command()
 async def open(ctx):
     # shows the channel marked
-    channel_name = ctx.channel
-    print (channel_name)
-    sessions.append(channel_name)
+    channel = ctx.channel
+    sessions[channel.id] = [[],[]]
     print (sessions)
-    await ctx.send(f'Session has been opened in {channel_name}')
+    await ctx.send(f'Session has been opened in {channel}')
 
 
 
