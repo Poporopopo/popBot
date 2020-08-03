@@ -23,8 +23,9 @@ async def on_ready():
 async def on_message(message):
     if message.author == bot.user:
         return
-        
-    print("The message's content was", message.content)
+
+    print("The message's content was:")
+    print(message.content)
 
     # # testing: works for tupper bots
     # print(message.author.name)
@@ -53,6 +54,7 @@ async def on_message(message):
 
     # #ignores bots
     await bot.process_commands(message)
+    print ()
 
 # commands section
 
