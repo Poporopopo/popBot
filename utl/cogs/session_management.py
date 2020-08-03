@@ -1,4 +1,4 @@
-import discord
+import discord, asyncio
 from discord.ext import commands
 
 class session_cog(commands.Cog):
@@ -45,13 +45,34 @@ class session_cog(commands.Cog):
     # adds character to current cast
     @commands.command()
     async def join(self, ctx, *args):
+        # quits if no session is opened
         if self.is_session_not_open(ctx.channel.id):
             await ctx.send(
                 f'Session is not open in {ctx.channel}.'
             )
             return
         if len(args) > 0 and args[0] == 'bot':
-            print (args[0])
+            # instructions to add a tupper
+            await ctx.send(
+                'Now waiting for Tupper. '
+                'Send \'join\' from your Tupper in the next 30 seconds '
+                'to add it to cast.'
+            )
+
+            # waits for join message from a tupper bot
+            def is_bot(message):
+                print (message.author.bot)
+                return message.author.bot and message.content == 'join'
+            try:
+                message = await self.bot.wait_for('message', check=is_bot, timeout=30.0)
+            except asyncio.TimeoutError:
+                await ctx.send(
+                    f'Tupperbot not found in {ctx.channel}.'
+                )
+            else:
+                await ctx.send(
+                    f'Tupperbot found in {ctx.channel}.'
+                )
             return
         # add message sender to cast of session
         print("Is in cast?: ",
