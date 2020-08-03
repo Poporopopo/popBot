@@ -61,7 +61,6 @@ class session_cog(commands.Cog):
 
             # waits for join message from a tupper bot
             def is_bot(message):
-                print (message.author.bot)
                 return message.author.bot and message.content == 'join'
             try:
                 message = await self.bot.wait_for('message', check=is_bot, timeout=30.0)
@@ -70,9 +69,17 @@ class session_cog(commands.Cog):
                     f'Tupperbot not found in {ctx.channel}.'
                 )
             else:
-                await ctx.send(
-                    f'Tupperbot found in {ctx.channel}.'
-                )
+                if self.is_in_cast(message.author.display_name, ctx.channel.id):
+                    await ctx.send(
+                        f'{message.author.display_name} '
+                        f'is already in the session in {ctx.channel}.'
+                    )
+                else:
+                    self.sessions[ctx.channel.id][0].append(message.author.display_name)
+                    await ctx.send(
+                        f'{message.author.display_name} '
+                        f'has been added to session in {ctx.channel}.'
+                    )
             return
         # add message sender to cast of session
         print("Is in cast?: ",
@@ -80,14 +87,14 @@ class session_cog(commands.Cog):
         )
         if self.is_in_cast(ctx.author.display_name, ctx.channel.id):
             await ctx.send(
-                f'{ctx.author.display_name}'
-                f' is already in the session in {ctx.channel}.'
+                f'{ctx.author.display_name} '
+                f'is already in the session in {ctx.channel}.'
             )
         else:
             self.sessions[ctx.channel.id][0].append(ctx.author.display_name)
             await ctx.send(
-                f'{ctx.author.display_name}'
-                f' has been added session in {ctx.channel}.'
+                f'{ctx.author.display_name} '
+                f'has been added to session in {ctx.channel}.'
             )
 
     # check if person is in the cast
