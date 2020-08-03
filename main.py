@@ -1,6 +1,7 @@
 import discord, pathlib
 # bot commands lib
 from discord.ext import commands
+from utl.cogs.session_management import session_cog
 
 # bot token finder
 file_parent_location = str(pathlib.Path(__file__).parent)
@@ -20,6 +21,9 @@ async def on_ready():
 # reads messages
 @bot.event
 async def on_message(message):
+    if message.author == bot.user:
+        return
+        
     print("The message's content was", message.content)
 
     # # testing: works for tupper bots
@@ -46,54 +50,18 @@ async def on_message(message):
     # # print (message_author_nickname)
     # print (message_author_isBot)
     # print()
+
     # #ignores bots
     await bot.process_commands(message)
 
 # commands section
-# example command
-@bot.command()
-async def echo(ctx, *, content:str):
-    await ctx.send(content)
 
-@bot.command()
-async def test(ctx):
-    channel = ctx.channel
-    async for message in channel.history():
-        print (message.author)
-        print ()
 
 # tracks sessions based on channels
 sessions = {}
 
-# marks the channel as an open session
-@bot.command()
-async def open(ctx):
-    # shows the channel marked
-    channel = ctx.channel
-    all_sessions = sessions.keys()
-    if (channel.id not in all_sessions):
-        sessions[channel.id] = [[],[]]
-        await ctx.send(f'Session has been opened in {channel}.')
-    else:
-        await ctx.send(f'Session is already open in {channel}.')
-    print (sessions)
-    print()
-
-# unmarks channel as open session
-@bot.command()
-async def close(ctx):
-    channel = ctx.channel
-    try:
-        # pauses session and checks for title
-        # records information from session
-
-        # removes from sessions list
-        del sessions[channel.id]
-        await ctx.send(f'Session has been closed in {channel}.')
-    except KeyError:
-        await ctx.send(f'Session is already closed in {channel}.')
-    print (sessions)
-    print ()
+# cogs
+bot.add_cog(session_cog(bot, sessions))
 
 # run section; must be at end
 bot.run(bot_token)
