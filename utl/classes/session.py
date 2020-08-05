@@ -54,6 +54,9 @@ class section:
     def get_end():
         return self.end_date
 
+    def set_end(end_date):
+        self.end_date = end_date
+
     # checks if the section is closed
     def is_open():
         return self.get_end() == None
@@ -61,4 +64,4 @@ class section:
     # closes the section with a stop date
     def close(stop_date):
         if self.is_open():
-            self.end_date = stop_date
+            self.set_end(stop_date)
