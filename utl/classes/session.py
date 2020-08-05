@@ -1,4 +1,25 @@
-from exceptions.session_exceptions import *
+from utl.exceptions.session_exceptions import *
+
+class session_manager:
+    def __init__(self, sessions=[]):
+        self.sessions = sessions.copy()
+
+    def get_sessions():
+        return self.sessions
+
+    def open_session(id):
+        if (self.session_exists(id)):
+            return
+        
+
+    def session_exists(id):
+        sessions = self.get_sessions()
+        # search for a session id match
+        for session in sessions:
+            if session.get_id() == id:
+                return True
+        # if not match is found
+        return False
 
 class session:
     def __init__(self, id ,cast=[], sections=[]):
