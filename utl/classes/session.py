@@ -1,4 +1,4 @@
-from exceptions import *
+from exceptions.session_exceptions import *
 
 class session:
     def __init__(self, id ,cast=[], sections=[]):
@@ -17,14 +17,14 @@ class session:
 
     # takes name <string> add pushes to cast array
     def add_member(self, name):
-        if name in cast:
+        if name in self.get_cast():
             raise (Cast_Error("Member already added"))
         else:
             self.cast.append(name)
 
     # takes name <string> and removes from cast array
     def remove_member(self, name):
-        if name in cast:
+        if name in self.get_cast():
             self.cast.remove(name)
         else:
             raise (Cast_Error("Member not in Cast"))
@@ -33,7 +33,7 @@ class session:
     def start_section(self, start_date):
         # if the previous section is still open, will not make a new one
         if (not self.is_paused()):
-            return
+            raise (Pause_Error("A section is already open"))
         new_section = section(self.cast, start_date)
         self.sections.append(new_section)
         return
@@ -44,7 +44,7 @@ class session:
         # previous section is still opened
         # no section exists
         if self.is_paused():
-            return
+            raise (Pause_Error("No sections to close"))
         last_section = self.sections[-1]
         last_section.close(stop_date)
 
