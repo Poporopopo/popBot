@@ -45,6 +45,15 @@ class section:
         self.start_date = start_date
         self.end_date = None
 
+    def get_cast():
+        return self.cast
+
+    def get_start():
+        return self.start_date
+
+    def get_end():
+        return self.end_date
+
     # checks if the section is closed
     def is_open():
         return self.end_date == None
