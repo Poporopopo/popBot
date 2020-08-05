@@ -5,15 +5,15 @@ class session:
         self.sections = sections.copy
 
     # takes name <string> add pushes to cast array
-    def add_member(name):
+    def add_member(self, name):
         self.cast.push(name)
 
     # takes name <string> and removes from cast array
-    def remove_member(name):
+    def remove_member(self, name):
         self.cast.remove(name)
 
     # creates a new section
-    def start_section(start_date):
+    def start_section(self, start_date):
         # if the previous section is still open, will not make a new one
         if (not self.is_paused()):
             return
@@ -22,7 +22,7 @@ class session:
         return
 
     # closes the last section
-    def stop_section(stop_date):
+    def stop_section(self, stop_date):
         # stops if:
         # previous section is still opened
         # no section exists
@@ -32,7 +32,7 @@ class session:
         last_section.close(stop_date)
 
     # checks if the latest section is closed
-    def is_paused():
+    def is_paused(self):
         # returns true if no sections exist
         if (len(self.sections) < 1):
             return True
