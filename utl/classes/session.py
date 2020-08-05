@@ -4,6 +4,15 @@ class session:
         self.cast = cast.copy
         self.sections = sections.copy
 
+    def get_id(self):
+        return self.id
+
+    def get_cast(self):
+        return self.cast
+
+    def get_sections(self):
+        return self.sections
+    
     # takes name <string> add pushes to cast array
     def add_member(self, name):
         self.cast.push(name)
