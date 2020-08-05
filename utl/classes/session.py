@@ -15,11 +15,13 @@ class session:
 
     # takes name <string> add pushes to cast array
     def add_member(self, name):
-        self.cast.append(name)
+        if name not in cast:
+            self.cast.append(name)
 
     # takes name <string> and removes from cast array
     def remove_member(self, name):
-        self.cast.remove(name)
+        if name in cast:
+            self.cast.remove(name)
 
     # creates a new section
     def start_section(self, start_date):
