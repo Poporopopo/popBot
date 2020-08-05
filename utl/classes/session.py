@@ -15,17 +15,28 @@ class session:
     # creates a new section
     def start_section(start_date):
         # if the previous section is still open, will not make a new one
-        if (not is_paused()):
+        if (not self.is_paused()):
             return
         section = section(self.cast, start_date)
         self.cast.append(section)
         return
 
+    # closes the last section
+    def stop_section(stop_date):
+        # stops if:
+        # previous section is still opened
+        # no section exists
+        if self.is_paused():
+            return
+        last_section = self.sections[-1]
+        last_section.close(stop_date)
+
     # checks if the latest section is closed
     def is_paused():
-        if (len(self.cast) < 1):
+        # returns true if no sections exist
+        if (len(self.sections) < 1):
             return True
-        last_section = self.cast[-1]
+        last_section = self.sections[-1]
         return (not last_section.is_open())
 
 class section:
@@ -34,5 +45,11 @@ class section:
         self.start_date = start_date
         self.end_date = None
 
+    # checks if the section is closed
     def is_open():
         return self.end_date == None
+
+    # closes the section with a stop date
+    def close(stop_date):
+        if stop_date != None:
+            self.end_date = stop_date
