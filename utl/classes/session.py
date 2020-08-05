@@ -1,8 +1,8 @@
 class session:
     def __init__(self, id ,cast=[], sections=[]):
         self.id = id
-        self.cast = cast.copy
-        self.sections = sections.copy
+        self.cast = cast.copy()
+        self.sections = sections.copy()
 
     def get_id(self):
         return self.id
@@ -12,10 +12,10 @@ class session:
 
     def get_sections(self):
         return self.sections
-    
+
     # takes name <string> add pushes to cast array
     def add_member(self, name):
-        self.cast.push(name)
+        self.cast.append(name)
 
     # takes name <string> and removes from cast array
     def remove_member(self, name):
@@ -26,8 +26,8 @@ class session:
         # if the previous section is still open, will not make a new one
         if (not self.is_paused()):
             return
-        section = section(self.cast, start_date)
-        self.cast.append(section)
+        new_section = section(self.cast, start_date)
+        self.sections.append(new_section)
         return
 
     # closes the last section
