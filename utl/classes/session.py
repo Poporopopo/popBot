@@ -1,3 +1,5 @@
+from exceptions import *
+
 class session:
     def __init__(self, id ,cast=[], sections=[]):
         self.id = id
@@ -15,13 +17,17 @@ class session:
 
     # takes name <string> add pushes to cast array
     def add_member(self, name):
-        if name not in cast:
+        if name in cast:
+            raise (Cast_Error("Member already added"))
+        else:
             self.cast.append(name)
 
     # takes name <string> and removes from cast array
     def remove_member(self, name):
         if name in cast:
             self.cast.remove(name)
+        else:
+            raise (Cast_Error("Member not in Cast"))
 
     # creates a new section
     def start_section(self, start_date):
