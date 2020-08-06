@@ -11,17 +11,10 @@ class session_manager:
         # if not matching is found
         raise Session_Error("Session does not exist")
 
-    # # private method, don't use
-    # def remove_session(self, id):
-    #     # searches for session
-    #     to_remove = self.get_session(id)
-    #     # TODO: close and save the session beforehand
-    #     self.sessions.remove(to_remove)
-
     # opens a session if it doesn't exist
     def open_session(self, id):
         try:
-            get_session(id)
+            self.get_session(id)
         except Session_Error:
             self.sessions.append(session(id))
 

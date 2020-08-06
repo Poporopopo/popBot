@@ -3,21 +3,21 @@ from utl.classes.session import *
 
 # initializing session manager object
 sm = session_manager()
-print (sm.get_sessions())
+print (sm.sessions)
 
 # adding sessions
 sm.open_session(20)
 sm.open_session(0)
-print (sm.get_sessions())
+print (sm.sessions)
 
 # testing catch for duplicate session add
 sm.open_session(20)
-print (sm.get_sessions())
+print (sm.sessions)
 
 # removing sessions
-sm.remove_session(20)
-print (sm.get_sessions())
+sm.close_session(20)
+print (sm.sessions)
 
 # catch for removing nonexistant session
-sm.remove_session(20)
-print (sm.get_sessions())
+sm.close_session(20)
+print (sm.sessions)
