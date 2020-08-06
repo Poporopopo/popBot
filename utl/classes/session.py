@@ -4,13 +4,13 @@ class session_manager:
     def __init__(self, sessions=[]):
         self.sessions = sessions.copy()
 
-    def get_sessions():
+    def get_sessions(self):
         return self.sessions.copy()
 
-    def add_session(session):
+    def add_session(self, session):
         self.sessions.push(session)
 
-    def remove_session(id):
+    def remove_session(self, id):
         # searches for session
         for session in self.sessions:
             if session.get_id() == id:
@@ -19,16 +19,16 @@ class session_manager:
                 self.sessions.remove(session)
                 return
 
-    def open_session(id):
+    def open_session(self, id):
         if (self.session_exists(id)):
             return
         add_session(session(id))
 
-    def close_session(id):
+    def close_session(self, id):
         if self.session_exists(id):
             self.remove_session(id)
 
-    def session_exists(id):
+    def session_exists(self, id):
         sessions = self.get_sessions()
         # search for a session id match
         for session in sessions:
