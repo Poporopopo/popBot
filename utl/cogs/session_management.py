@@ -3,9 +3,9 @@ from utl.classes import session
 from discord.ext import commands
 
 class session_cog(commands.Cog):
-    def __init__(self, bot, channel_array):
+    def __init__(self, bot, manager):
         self.bot = bot
-        self.sessions = channel_array
+        self.session_manager = manager
 
     # marks the channel as an open session
     @commands.command()
@@ -162,11 +162,12 @@ class session_cog(commands.Cog):
     # determines if a session is being recorded
     # returns boolean
     def is_in_session(self, channel_id):
-        # check if sessions_dict is empty
-        if len(self.sessions) < 1:
-            return False
-        # check if there was a pause command issued
-        session_sections = self.sessions[channel_id][1]
-        if len(session_sections) < 1:
-            return False
-        return len(session_sections[-1][1]) == 1
+        # # check if sessions_dict is empty
+        # if len(self.sessions) < 1:
+        #     return False
+        # # check if there was a pause command issued
+        # session_sections = self.sessions[channel_id][1]
+        # if len(session_sections) < 1:
+        #     return False
+        # return len(session_sections[-1][1]) == 1
+        

@@ -4,40 +4,41 @@ class session_manager:
     def __init__(self, sessions=[]):
         self.sessions = sessions.copy()
 
-    def get_sessions(self):
-        return self.sessions.copy()
-
-    # private method, don't use
-    def add_session(self, session):
-        self.sessions.append(session)
-
-    # private method, don't use
-    def remove_session(self, id):
-        # searches for session
+    def get_session(self, id):
         for session in self.sessions:
             if session.get_id() == id:
-                # TODO: close and save the session beforehand
+                return session
+        # if not matching is found
+        raise Session_Error("Session does not exist")
 
-                self.sessions.remove(session)
-                return
+    # # private method, don't use
+    # def remove_session(self, id):
+    #     # searches for session
+    #     to_remove = self.get_session(id)
+    #     # TODO: close and save the session beforehand
+    #     self.sessions.remove(to_remove)
 
+    # opens a session if it doesn't exist
     def open_session(self, id):
-        if (self.session_exists(id)):
-            return
-        self.add_session(session(id))
+        try:
+            get_session(id)
+        except Session_Error:
+            self.sessions.append(session(id))
 
+    # closes a session if it exists
     def close_session(self, id):
-        if self.session_exists(id):
-            self.remove_session(id)
+        # searches for session
+        try:
+            to_remove = self.get_session(id)
+            # TODO: close and save the session beforehand
+            self.sessions.remove(to_remove)
+        except Session_Error as error:
+            error
 
-    def session_exists(self, id):
-        sessions = self.get_sessions()
-        # search for a session id match
-        for session in sessions:
-            if session.get_id() == id:
-                return True
-        # if not match is found
-        return False
+    def is_session_paused(self, id):
+        if self.session_exists(id):
+            return
+        return
 
 class session:
     def __init__(self, id ,cast=[], sections=[]):
