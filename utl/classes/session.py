@@ -5,12 +5,15 @@ class session_manager:
         self.sessions = sessions.copy()
 
     def get_sessions():
-        return self.sessions
+        return self.sessions.copy()
+
+    def add_session(session):
+        self.session.push(session)
 
     def open_session(id):
         if (self.session_exists(id)):
             return
-        
+        add_session(session(id))
 
     def session_exists(id):
         sessions = self.get_sessions()
@@ -31,10 +34,10 @@ class session:
         return self.id
 
     def get_cast(self):
-        return self.cast
+        return self.cast.copy()
 
     def get_sections(self):
-        return self.sections
+        return self.sections.copy()
 
     # takes name <string> add pushes to cast array
     def add_member(self, name):
@@ -84,7 +87,7 @@ class section:
         self.end_date = None
 
     def get_cast(self):
-        return self.cast
+        return self.cast.copy()
 
     def get_start(self):
         return self.start_date
