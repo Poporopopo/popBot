@@ -8,12 +8,25 @@ class session_manager:
         return self.sessions.copy()
 
     def add_session(session):
-        self.session.push(session)
+        self.sessions.push(session)
+
+    def remove_session(id):
+        # searches for session
+        for session in self.sessions:
+            if session.get_id() == id:
+                # TODO: close and save the session beforehand
+
+                self.sessions.remove(session)
+                return
 
     def open_session(id):
         if (self.session_exists(id)):
             return
         add_session(session(id))
+
+    def close_session(id):
+        if self.session_exists(id):
+            self.remove_session(id)
 
     def session_exists(id):
         sessions = self.get_sessions()
