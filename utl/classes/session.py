@@ -7,9 +7,11 @@ class session_manager:
     def get_sessions(self):
         return self.sessions.copy()
 
+    # private method, don't use
     def add_session(self, session):
-        self.sessions.push(session)
+        self.sessions.append(session)
 
+    # private method, don't use
     def remove_session(self, id):
         # searches for session
         for session in self.sessions:
@@ -22,7 +24,7 @@ class session_manager:
     def open_session(self, id):
         if (self.session_exists(id)):
             return
-        add_session(session(id))
+        self.add_session(session(id))
 
     def close_session(self, id):
         if self.session_exists(id):
