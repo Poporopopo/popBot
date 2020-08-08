@@ -1,8 +1,18 @@
+from utl.classes import section
+
 class session:
     def __init__(self, id ,cast=[], sections=[]):
         self.id = id
         self.cast = cast.copy()
         self.sections = sections.copy()
+
+    def __str__(self):
+        output = {
+            "ID" : self.id,
+            "cast" : self.cast,
+            "sections": self.sections
+        }
+        return str(output)
 
     def get_id(self):
         return self.id
@@ -34,7 +44,6 @@ class session:
             raise (Pause_Error("A section is already open"))
         new_section = section(self.cast, start_date)
         self.sections.append(new_section)
-        return
 
     # closes the last section
     def stop_section(self, stop_date):
