@@ -62,6 +62,19 @@ class session_manager:
             except session.Cast_Error as error:
                 raise error
 
+    # checks if session is opens
+    # if open, tries to remove member from cast
+    def remove_member(self, id, name):
+        try:
+            to_remove = self.get_session(id)
+        except Session_Error as error:
+            raise error
+        else:
+            try:
+                to_remove.remove_member(name)
+            except session.Cast_Error as error:
+                raise error
+
 class Session_Error(Exception):
     def __init__(self, value):
         self.value = value
