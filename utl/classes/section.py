@@ -4,6 +4,14 @@ class section:
         self.start_date = start_date
         self.end_date = None
 
+    def __str__(self):
+        output = [
+            self.get_cast(),
+            self.get_start(),
+            self.get_end()
+        ]
+        return output
+
     def get_cast(self):
         return self.cast.copy()
 
