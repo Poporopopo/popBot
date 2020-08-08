@@ -44,7 +44,7 @@ class session:
             raise (Pause_Error("A section is already open"))
         elif (len(self.get_cast()) < 1):
             raise (Cast_Error("Cast cannot be empty before starting"))
-        new_section = section(self.cast, start_date)
+        new_section = section.section(self.cast, start_date)
         self.sections.append(new_section)
 
     # closes the last section
