@@ -23,6 +23,14 @@ class session:
     def get_sections(self):
         return self.sections.copy()
 
+    # checks if the latest section is closed
+    def is_paused(self):
+        # returns true if no sections exist
+        if (len(self.sections) < 1):
+            return True
+        last_section = self.sections[-1]
+        return (not last_section.is_open())
+
     # takes name <string> add pushes to cast array
     def add_member(self, name):
         if name in self.get_cast():
@@ -57,13 +65,6 @@ class session:
         last_section = self.sections[-1]
         last_section.close(stop_date)
 
-    # checks if the latest section is closed
-    def is_paused(self):
-        # returns true if no sections exist
-        if (len(self.sections) < 1):
-            return True
-        last_section = self.sections[-1]
-        return (not last_section.is_open())
 
 class Cast_Error(Exception):
     def __init__ (self, value):

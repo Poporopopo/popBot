@@ -1,20 +1,34 @@
+from utl.classes import session
+
 class session_manager:
     def __init__(self, sessions=[]):
         self.sessions = sessions.copy()
 
     def get_session(self, id):
-        for session in self.sessions:
-            if session.get_id() == id:
-                return session
+        for a_session in self.sessions:
+            if a_session.get_id() == id:
+                return a_session
         # if not matching is found
         raise Session_Error("Session does not exist")
 
+    def is_session_open(self, id):
+        for a_session in self.sessions:
+            if a_session.get_id() == id:
+                return True
+        return False
+
+    def is_session_paused(self, id):
+        try:
+            to_check = self.get_session(id)
+            return to_check.is_paused()
+        except Session_Error as error:
+            raise error
+
     # opens a session if it doesn't exist
     def open_session(self, id):
-        try:
-            self.get_session(id)
-        except Session_Error:
-            self.sessions.append(session(id))
+        if self.is_session_open():
+            raise Session_Error("Session already exists")
+        self.sessions.append(session(id))
 
     # closes a session if it exists
     def close_session(self, id):
@@ -25,10 +39,6 @@ class session_manager:
             self.sessions.remove(to_remove)
         except Session_Error as error:
             raise error
-
-    def is_session_paused(self, id):
-
-        return
 
 class Session_Error(Exception):
     def __init__(self, value):
