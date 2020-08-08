@@ -71,6 +71,7 @@ except session.Cast_Error as error:
 print()
 
 # session testing: section creation
+print ("Testing start_section()")
 sess.cast = []
 print ("Start a section with empty cast")
 try:
@@ -107,6 +108,24 @@ except session.Pause_Error as error:
 except session.Cast_Error as error:
     print (error)
 print()
+
+# session testing: section closing
+print ("Closing section when one is started")
+try:
+    sess.stop_section(2021)
+    print ("Section closed")
+except session.Pause_Error as error:
+    print (error)
+print ()
+
+print ("Closing a section when none is started")
+try:
+    sess.stop_section(2021)
+    print ("Section closed")
+except session.Pause_Error as error:
+    print (error)
+print ()
+
 # print ("Testing session manager")
 #
 # print("initializing session manager object")
