@@ -31,16 +31,19 @@ class session:
         last_section = self.sections[-1]
         return (not last_section.is_open())
 
+    def is_in_cast(self, name):
+        return name in self.get_cast()
+
     # takes name <string> add pushes to cast array
     def add_member(self, name):
-        if name in self.get_cast():
+        if self.is_in_cast(name):
             raise (Cast_Error("Member already added"))
         else:
             self.cast.append(name)
 
     # takes name <string> and removes from cast array
     def remove_member(self, name):
-        if name in self.get_cast():
+        if self.is_in_cast(name):
             self.cast.remove(name)
         else:
             raise (Cast_Error("Member not in Cast"))

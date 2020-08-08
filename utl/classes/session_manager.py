@@ -75,6 +75,14 @@ class session_manager:
             except session.Cast_Error as error:
                 raise error
 
+    def is_name_in_session(self, id, name):
+        try:
+            to_check = self.get_session(id)
+        except Session_Error as error:
+            raise error
+        else:
+            return to_check.is_in_cast(name)
+
 class Session_Error(Exception):
     def __init__(self, value):
         self.value = value
