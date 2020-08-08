@@ -1,6 +1,7 @@
 import discord
 from asyncio import TimeoutError
 from utl.classes import session_manager
+from utl.classes.session import Cast_Error
 from discord.ext import commands
 
 class session_cog(commands.Cog):
@@ -67,14 +68,18 @@ class session_cog(commands.Cog):
                 'Send \'join\' from your Tupper in the next 30 seconds '
                 'to add it to cast.'
             )
+            # waits for message from bot
             try:
-                bot_message = bot_catcher(ctx, bot_join_instructions, 'join')
+                bot_message = self.bot_catcher(ctx, bot_join_instructions, 'join')
             except TimeoutError:
+                # sends message when no bot is found
                 await ctx.send(
                     f'Tupperbot not found in {ctx.channel}.'
                 )
             else:
-                return
+                # otherwise tries to add
+                self.join_handling(ctx, bot_message.author.display_name)
+
 
         # # add message sender to cast of session
         # if self.is_in_cast(ctx.author.display_name, ctx.channel.id):
@@ -89,6 +94,20 @@ class session_cog(commands.Cog):
         #         f'has been added to session in {ctx.channel}.'
         #     )
         # print (self.sessions)
+
+    async def join_handling(self, ctx, name):
+        try:
+            self.session_manager.add_member(ctx.channel.id, name)
+        except Cast_Error:
+             await ctx.send(
+                f'{name} '
+                f'is already in the session in {ctx.channel}.'
+            )
+        else:
+            await ctx.send(
+                f'{name} '
+                f'has been removed from the session in {ctx.channel}.'
+            )
 
     # @commands.command()
     # async def leave(self, ctx, *args):
