@@ -99,56 +99,53 @@ class session_cog(commands.Cog):
                 f'has been added to the session in {ctx.channel}.'
             )
 
-    # @commands.command()
-    # async def leave(self, ctx, *args):
-    #     # quits if no session is opened
-    #     if self.is_session_not_open(ctx.channel.id):
-    #         await ctx.send(
-    #             f'Session is not open in {ctx.channel}.'
-    #         )
-    #         return
-    #     if len(args) > 0 and args[0] == 'bot':
-    #         # instructions to remove a tupper
-    #         await ctx.send(
-    #             'Now waiting for Tupper. '
-    #             'Send \'leave\' from your Tupper in the next 30 seconds '
-    #             'to leave to cast.'
-    #         )
-    #
-    #         # waits for join message from a tupper bot
-    #         def is_bot(message):
-    #             return message.author.bot and message.content == 'leave'
-    #         try:
-    #             message = await self.bot.wait_for('message', check=is_bot, timeout=30.0)
-    #         except asyncio.TimeoutError:
-    #             await ctx.send(
-    #                 f'Tupperbot not found in {ctx.channel}.'
-    #             )
-    #         else:
-    #             if self.is_in_cast(message.author.display_name, ctx.channel.id):
-    #                 # removes from cast array in session
-    #                 self.sessions[ctx.channel.id][0].remove(message.author.display_name)
-    #                 await ctx.send(
-    #                     f'{message.author.display_name} '
-    #                     f'has been removed from the session in {ctx.channel}.'
-    #                 )
-    #             else:
-    #                 await ctx.send(
-    #                     f'{message.author.display_name} '
-    #                     f'was not in the session in {ctx.channel}.'
-    #                 )
-    #         return
-    #     # remove message sender from cast of session
-    #     if self.is_in_cast(ctx.author.display_name, ctx.channel.id):
-    #         self.sessions[ctx.channel.id][0].remove(ctx.author.display_name)
-    #         await ctx.send(
-    #             f'{ctx.author.display_name} '
-    #             f'has been removed from the session in {ctx.channel}.'
-    #         )
-    #     else:
-    #         self.sessions[ctx.channel.id][0].append(ctx.author.display_name)
-    #         await ctx.send(
-    #             f'{ctx.author.display_name} '
-    #             f'was not in the session in {ctx.channel}.'
-    #         )
-    #     print (self.sessions)
+    @commands.command()
+    async def leave(self, ctx, *args):
+        # quits if no session is opened
+        try:
+            to_leave = self.session_manager.get_session(ctx.channel.id)
+        except session_manager.Session_Error:
+            await ctx.send(
+                f'Session is not open in {ctx.channel}.'
+            )
+            return
+
+        if len(args) > 0 and args[0] == 'bot':
+            # instructions to remove a tupper
+            bot_leave_instructions = (
+                'Now waiting for Tupper. '
+                'Send \'leave\' from your Tupper in the next 30 seconds '
+                'to leave to cast.'
+            )
+
+            # waits for join message from a tupper bot
+
+            try:
+                bot_message = await self.bot_catcher(ctx, bot_leave_instructions, 'leave')
+            except asyncio.TimeoutError:
+                # sends message when no bot is found
+                await ctx.send(
+                    f'Tupperbot not found in {ctx.channel}.'
+                )
+            else:
+                # otherwise tries to remove
+                await self.leave_handling(ctx, bot_message.author.display_name)
+        # remove message sender from cast of session
+        else:
+            await self.leave_handling(ctx, ctx.author.display_name)
+        print ("Sessions:",
+            self.session_manager)
+
+    async def leave_handling(self, ctx, name):
+        try:
+            self.session_manager.remove_member(ctx.channel.id, name)
+        except Cast_Error:
+             await ctx.send(
+                f'{name} '
+                f'is not in the session in {ctx.channel}.'
+            )
+        else:
+            await ctx.send(
+                f'{name} '
+                f'has been remove from the session in {ctx.channel}.'
+            )
