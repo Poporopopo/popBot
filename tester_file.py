@@ -35,6 +35,7 @@ try:
     print ("Guy 1 added")
 except session.Cast_Error as error:
     print ("Guy 1 not added.", error)
+print()
 
 print ("Adding to cast existing member")
 try:
@@ -42,6 +43,7 @@ try:
     print ("Guy 1 added")
 except session.Cast_Error as error:
     print ("Guy 1 not added.", error)
+print()
 
 # bulk adds for testing
 guy_number = 2
@@ -50,6 +52,7 @@ while guy_number <= 100:
     guy_number += 1
 del guy_number
 print ("Cast after bulk adds:", sess.get_cast())
+print()
 
 print ("Removing from cast existing member")
 try:
@@ -57,6 +60,7 @@ try:
     print ("Guy 2 removed")
 except session.Cast_Error as error:
     print ("Guy 2 not removed.", error)
+print()
 
 print ("Removing from cast non existant member")
 try:
@@ -70,12 +74,12 @@ print()
 sess.cast = []
 print ("Start a section with empty cast")
 try:
-    self.start_section(2020)
+    sess.start_section(2020)
     print ("Section added")
-except Pause_Error as error:
-    print error
-except Cast_Error as error:
-    print error
+except session.Pause_Error as error:
+    print (error)
+except session.Cast_Error as error:
+    print (error)
 print()
 
 guy_number = 1
@@ -86,22 +90,22 @@ del guy_number
 
 print ("Starting a section with a cast")
 try:
-    self.start_section(2020)
+    sess.start_section(2020)
     print ("Section added")
-except Pause_Error as error:
-    print error
-except Cast_Error as error:
-    print error
+except session.Pause_Error as error:
+    print (error)
+except session.Cast_Error as error:
+    print (error)
 print ()
 
 print ("Starting a section with one already started")
 try:
-    self.start_section(2020)
+    sess.start_section(2020)
     print ("Section added")
-except Pause_Error as error:
-    print error
-except Cast_Error as error:
-    print error
+except session.Pause_Error as error:
+    print (error)
+except session.Cast_Error as error:
+    print (error)
 print()
 # print ("Testing session manager")
 #
