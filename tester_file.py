@@ -11,12 +11,35 @@ print ("get_start():", sec.get_start())
 print ("get_end():", sec.get_end())
 print ("is_open():", sec.is_open())
 print ("close(date):", sec.close(2021))
+print ("Section at the end:", sec)
 print ()
 
 print ("Testing session")
 print ("Initializing session")
+sess = session.session(22222)
+print ("Initialized session:", sess)
+print ()
+print ("Testing section methods get methods")
+print ("get_id():", sess.get_id())
+print ("get_cast():", sess.get_cast())
+print ("get_sections:", sess.get_sections())
+print ()
 
-
+print ("Testing section cast methods")
+print ("Adding to cast new member")
+try:
+    sess.add_member("Guy 1")
+    print ("Guy 1 added")
+    print (sess.get_cast())
+except session.Cast_Error as error:
+    print ("Guy 1 not added.", error)
+print ("Adding to cast existing member")
+try:
+    sess.add_member("Guy 1")
+    print ("Guy 1 added")
+    print (sess.get_cast())
+except session.Cast_Error as error:
+    print ("Guy 1 not added.", error)
 
 # print ("Testing session manager")
 #
