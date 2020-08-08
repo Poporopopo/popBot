@@ -1,7 +1,7 @@
 import discord, pathlib
 # bot commands lib
 from discord.ext import commands
-from utl.class.session import session_manager
+from utl.classes import session_manager
 from utl.cogs.session_management import session_cog
 
 # bot token finder
@@ -61,7 +61,7 @@ async def on_message(message):
 
 
 # tracks sessions based on channels
-sessions = {}
+sessions = session_manager.session_manager()
 
 # cogs
 bot.add_cog(session_cog(bot, sessions))

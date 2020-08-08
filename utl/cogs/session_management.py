@@ -1,5 +1,5 @@
 import discord, asyncio
-from utl.classes import session
+from utl.classes import session_manager
 from discord.ext import commands
 
 class session_cog(commands.Cog):
@@ -10,35 +10,26 @@ class session_cog(commands.Cog):
     # marks the channel as an open session
     @commands.command()
     async def open(self, ctx):
-        # shows the channel marked
-        channel = ctx.channel
-        # quits if session is recording
-        if self.is_in_session(channel.id):
-            return
-
-        if self.is_session_not_open(channel.id):
-            self.sessions[channel.id] = [[],[]]
-            await ctx.send(f'Session has been opened in {channel}.')
-        else:
+        # adds room to session if not open
+        try:
+            self.session_manager.open_session(ctx.channel.id)
+        except session_manager.Session_Error:
             await ctx.send(f'Session is already open in {channel}.')
+        else:
+            await ctx.send(f'Session has been opened in {channel}.')
         print ("Sessions:",
-            self.sessions)
+            self.session_manager
+            )
 
     # unmarks channel as open session
     @commands.command()
     async def close(self, ctx):
-        channel = ctx.channel
         # quits if session is recording
-        if self.is_in_session(channel.id):
-            return
         try:
-            # pauses session and checks for title
-            # records information from session
+            
 
-            # removes from sessions list
-            del self.sessions[channel.id]
             await ctx.send(f'Session has been closed in {channel}.')
-        except KeyError:
+
             await ctx.send(f'Session is already closed in {channel}.')
         print ("Sessions:",
             self.sessions)
@@ -170,4 +161,3 @@ class session_cog(commands.Cog):
         # if len(session_sections) < 1:
         #     return False
         # return len(session_sections[-1][1]) == 1
-        

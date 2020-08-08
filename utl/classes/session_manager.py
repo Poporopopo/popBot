@@ -17,12 +17,15 @@ class session_manager:
         # if not matching is found
         raise Session_Error("Session does not exist")
 
+    # boolean check for exising session
     def is_session_open(self, id):
         for a_session in self.sessions:
             if a_session.get_id() == id:
                 return True
         return False
 
+    # boolean check for session is paused
+    # throws error if session does not exist
     def is_session_paused(self, id):
         try:
             to_check = self.get_session(id)
