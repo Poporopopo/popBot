@@ -126,25 +126,39 @@ except session.Pause_Error as error:
     print (error)
 print ()
 
-# print ("Testing session manager")
-#
-# print("initializing session manager object")
-# sm = session_manager()
-# print (sm.sessions)
-#
-# print ("adding sessions")
-# sm.open_session(20)
-# sm.open_session(0)
-# print (sm.sessions)
-#
-# print ("testing catch for duplicate session add")
-# sm.open_session(20)
-# print (sm.sessions)
-#
-# print ("removing sessions")
-# sm.close_session(20)
-# print (sm.sessions)
-#
-# print ("catch for removing nonexistant session")
-# sm.close_session(20)
-# print (sm.sessions)
+# section_manager testing
+print ("Testing session manager")
+print("Initializing session manager object")
+sm = session_manager.session_manager()
+print ("Initialized session_manager", sm)
+print ()
+
+# adding session testing
+print ("adding sessions")
+sm.open_session(20)
+sm.open_session(0)
+print (sm)
+print ()
+
+print ("testing catch for duplicate session add")
+try:
+    sm.open_session(20)
+except session_manager.Session_Error as error:
+    print ("session has not been opened")
+    print (error)
+print (sm)
+print ()
+
+# removing section testing
+print ("removing sessions")
+sm.close_session(20)
+print (sm)
+print ()
+
+print ("testing catch for removing nonexistant session")
+try:
+    sm.close_session(20)
+except session_manager.Session_Error as error:
+    print (error)
+print (sm)
+print ()

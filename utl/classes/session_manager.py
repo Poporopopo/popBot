@@ -4,6 +4,12 @@ class session_manager:
     def __init__(self, sessions=[]):
         self.sessions = sessions.copy()
 
+    def __str__(self):
+        output = []
+        for session in self.sessions:
+            output.append(session.__str__())
+        return str(output)
+
     def get_session(self, id):
         for a_session in self.sessions:
             if a_session.get_id() == id:
@@ -26,9 +32,9 @@ class session_manager:
 
     # opens a session if it doesn't exist
     def open_session(self, id):
-        if self.is_session_open():
+        if self.is_session_open(id):
             raise Session_Error("Session already exists")
-        self.sessions.append(session(id))
+        self.sessions.append(session.session(id))
 
     # closes a session if it exists
     def close_session(self, id):
