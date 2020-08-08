@@ -36,6 +36,17 @@ class session_cog(commands.Cog):
         print ("Sessions:",
             self.session_manager)
 
+    # method for repeated check for open sessions
+    async def check_is_open(self, ctx):
+        try:
+            to_join = self.session_manager.get_session(ctx.channel.id)
+        except session_manager.Session_Error:
+            await ctx.send(
+                f'Session is not open in {ctx.channel}.'
+            )
+            return False
+        return True
+
     async def bot_catcher(self, ctx, message, keyword):
         await ctx.send(
             message
@@ -54,12 +65,7 @@ class session_cog(commands.Cog):
     @commands.command()
     async def join(self, ctx, *args):
         # quits if no session is opened
-        try:
-            to_join = self.session_manager.get_session(ctx.channel.id)
-        except session_manager.Session_Error:
-            await ctx.send(
-                f'Session is not open in {ctx.channel}.'
-            )
+        if (not await self.check_is_open(ctx)):
             return
         if len(args) > 0 and args[0] == 'bot':
             # instructions to add a tupper
@@ -84,7 +90,6 @@ class session_cog(commands.Cog):
         print ("Sessions:",
             self.session_manager)
 
-
     async def join_handling(self, ctx, name):
         try:
             self.session_manager.add_member(ctx.channel.id, name)
@@ -102,12 +107,7 @@ class session_cog(commands.Cog):
     @commands.command()
     async def leave(self, ctx, *args):
         # quits if no session is opened
-        try:
-            to_leave = self.session_manager.get_session(ctx.channel.id)
-        except session_manager.Session_Error:
-            await ctx.send(
-                f'Session is not open in {ctx.channel}.'
-            )
+        if (not await self.check_is_open(ctx)):
             return
 
         if len(args) > 0 and args[0] == 'bot':
@@ -149,3 +149,9 @@ class session_cog(commands.Cog):
                 f'{name} '
                 f'has been remove from the session in {ctx.channel}.'
             )
+
+    @commands.command()
+    async def start(self, ctx):
+        # quits if channel isn't open
+        if (not await self.check_is_open()):
+            return
