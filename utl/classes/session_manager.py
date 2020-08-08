@@ -49,6 +49,19 @@ class session_manager:
         except Session_Error as error:
             raise error
 
+    # checks if session is open
+    # if is tries to add member to cast
+    def add_member(self, id, name):
+        try:
+            to_add = self.get_session(id)
+        except Session_Error as error:
+            raise error
+        else:
+            try:
+                to_add.add_member(name)
+            except session.Cast_Error as error:
+                raise error
+
 class Session_Error(Exception):
     def __init__(self, value):
         self.value = value
