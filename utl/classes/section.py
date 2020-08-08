@@ -5,12 +5,12 @@ class section:
         self.end_date = None
 
     def __str__(self):
-        output = [
-            self.get_cast(),
-            self.get_start(),
-            self.get_end()
-        ]
-        return output
+        output = {
+            "cast": self.get_cast(),
+            "start_date": self.get_start(),
+            "end_date": self.get_end()
+        }
+        return str(output)
 
     def get_cast(self):
         return self.cast.copy()
@@ -28,4 +28,5 @@ class section:
     # closes the section with a stop date
     def close(self, stop_date):
         if self.is_open():
-            self.set_end(stop_date)
+            self.end_date = stop_date
+        return self.end_date
