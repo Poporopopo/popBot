@@ -21,9 +21,6 @@ class section:
     def get_end(self):
         return self.end_date
 
-    def set_end(self, end_date):
-        self.end_date = end_date
-
     # checks if the section is closed
     def is_open(self):
         return self.get_end() == None
