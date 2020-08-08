@@ -33,6 +33,7 @@ try:
     print (sess.get_cast())
 except session.Cast_Error as error:
     print ("Guy 1 not added.", error)
+
 print ("Adding to cast existing member")
 try:
     sess.add_member("Guy 1")
@@ -40,6 +41,27 @@ try:
     print (sess.get_cast())
 except session.Cast_Error as error:
     print ("Guy 1 not added.", error)
+
+# bulk adds for testing
+guy_number = 2
+while guy_number <= 100:
+    sess.add_member(f'Guy {guy_number}')
+    guy_number += 1
+print ("Cast after bulk adds:", sess.get_cast())
+
+print ("Removing from cast existing member")
+try:
+    sess.remove_member("Guy 2")
+    print ("Guy 2 removed")
+except session.Cast_Error as error:
+    print ("Guy 2 not removed.", error)
+
+print ("Removing from cast non existant member")
+try:
+    sess.remove_member("Guy 2")
+    print ("Guy 2 removed")
+except session.Cast_Error as error:
+    print ("Guy 2 not removed.", error)
 
 # print ("Testing session manager")
 #
