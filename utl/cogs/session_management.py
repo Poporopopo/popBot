@@ -1,7 +1,7 @@
 import discord
 from asyncio import TimeoutError
 from utl.classes import session_manager
-from utl.classes.session import Cast_Error
+from utl.classes.session import Cast_Error, Pause_Error
 from discord.ext import commands
 
 class session_cog(commands.Cog):
@@ -161,5 +161,18 @@ class session_cog(commands.Cog):
                 f'{ctx.author.display_name} '
                 f'is not part of session in {ctx.channel}.'
             )
-            return
-        
+        # starts section
+        else:
+            try:
+                self.session_manager.start_in_session(ctx.channel.id, ctx.message.created_at)
+            except Pause_Error as error:
+                await ctx.send(
+                    f'Already recording session in {ctx.channel}.'
+                )
+                print (error)
+            else:
+                await ctx.send(
+                    f'Now recording session in {ctx.channel}.'
+                )
+        print ("Sessions:",
+            self.session_manager)

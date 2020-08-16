@@ -7,10 +7,13 @@ class session:
         self.sections = sections.copy()
 
     def __str__(self):
+        sections = []
+        for section in self.sections:
+            sections.append(section.__str__()) 
         output = {
             "ID" : self.id,
             "cast" : self.cast,
-            "sections": self.sections
+            "sections": sections
         }
         return str(output)
 

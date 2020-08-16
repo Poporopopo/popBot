@@ -85,10 +85,14 @@ class session_manager:
         else:
             return to_check.is_in_cast(name)
 
+    # checks if session exists, else throws error
+    # asks session to start a section
     def start_in_session(self, id, date):
         try:
             to_check = self.get_session(id)
         except Session_Error as error:
+            raise error
+        except session.Pause_Error as error:
             raise error
         else:
             to_check.start_section(date)
