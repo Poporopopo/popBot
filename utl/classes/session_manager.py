@@ -89,13 +89,25 @@ class session_manager:
     # asks session to start a section
     def start_in_session(self, id, date):
         try:
-            to_check = self.get_session(id)
+            sess = self.get_session(id)
         except Session_Error as error:
             raise error
         except session.Pause_Error as error:
             raise error
         else:
-            to_check.start_section(date)
+            sess.start_section(date)
+
+    # checks if session exists, else throws error
+    # asks session to close a section
+    def close_in_session(self, id, date):
+        try:
+            sess = self.get_session(id)
+        except Session_Error as error:
+            raise error
+        except session.Pause_Error as error:
+            raise error
+        else:
+            sess.stop_section(date)
 
 class Session_Error(Exception):
     def __init__(self, value):

@@ -169,10 +169,35 @@ class session_cog(commands.Cog):
                 await ctx.send(
                     f'Already recording session in {ctx.channel}.'
                 )
-                print (error)
             else:
                 await ctx.send(
                     f'Now recording session in {ctx.channel}.'
+                )
+        print ("Sessions:",
+            self.session_manager)
+
+    @commands.command()
+    async def stop(self, ctx):
+        # quits if channel isn't open
+        if (not await self.check_is_open(ctx)):
+            return
+        # checks if the command is issued by a member of the cast
+        if not self.session_manager.is_name_in_session(ctx.channel.id, ctx.author.display_name):
+            await ctx.send(
+                f'{ctx.author.display_name} '
+                f'is not part of session in {ctx.channel}.'
+            )
+        # closes section
+        else:
+            try:
+                self.session_manager.close_in_session(ctx.channel.id, ctx.message.created_at)
+            except Pause_Error as error:
+                await ctx.send(
+                    f'Session in {ctx.channel} is not being recorded.'
+                )
+            else:
+                await ctx.send(
+                    f'Session in {ctx.channel} no longer being recorded.'
                 )
         print ("Sessions:",
             self.session_manager)
