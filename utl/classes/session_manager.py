@@ -75,6 +75,8 @@ class session_manager:
             except session.Cast_Error as error:
                 raise error
 
+    # checks if session exists, else throws error
+    # returns boolean of if the name exists in the session
     def is_name_in_session(self, id, name):
         try:
             to_check = self.get_session(id)
@@ -82,6 +84,14 @@ class session_manager:
             raise error
         else:
             return to_check.is_in_cast(name)
+
+    def start_in_session(self, id, date):
+        try:
+            to_check = self.get_session(id)
+        except Session_Error as error:
+            raise error
+        else:
+            to_check.start_section(date)
 
 class Session_Error(Exception):
     def __init__(self, value):
