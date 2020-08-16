@@ -153,5 +153,13 @@ class session_cog(commands.Cog):
     @commands.command()
     async def start(self, ctx):
         # quits if channel isn't open
-        if (not await self.check_is_open()):
+        if (not await self.check_is_open(ctx)):
             return
+        # checks if the command is issued by a member of the cast
+        if not self.session_manager.is_name_in_session(ctx.channel.id, ctx.author.display_name):
+            await ctx.send(
+                f'{ctx.author.display_name} '
+                f'is not part of session in {ctx.channel}.'
+            )
+            return
+        
