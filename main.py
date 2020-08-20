@@ -11,7 +11,8 @@ with open(file_parent_location + "/data/bot_token.txt", "r") as token_file:
     bot_token = token_file.readline()
 
 client = discord.Client()
-bot = commands.Bot(command_prefix='popbot ')
+prefix = 'popbot '
+bot = commands.Bot(command_prefix=prefix)
 
 #  callback: happens when an event happens
 @bot.event

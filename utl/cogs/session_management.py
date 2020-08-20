@@ -186,8 +186,8 @@ class session_cog(commands.Cog):
 
     @commands.command()
     async def stop(self, ctx):
-        # quits if channel isn't open or isn't recording
-        if (not await self.check_is_open(ctx) or self.check_is_paused(ctx.channel.id)):
+        # quits if channel isn't open
+        if not await self.check_is_open(ctx):
             return
         # checks if the command is issued by a member of the cast
         if not self.session_manager.is_name_in_session(ctx.channel.id, ctx.author.display_name):
