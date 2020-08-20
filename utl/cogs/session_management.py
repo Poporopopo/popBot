@@ -12,6 +12,9 @@ class session_cog(commands.Cog):
     # marks the channel as an open session
     @commands.command()
     async def open(self, ctx):
+        # quits command if room is not paused
+        if not self.check_is_paused(ctx.channel.id):
+            return
         # adds room to session if not open
         try:
             self.session_manager.open_session(ctx.channel.id)
@@ -38,14 +41,22 @@ class session_cog(commands.Cog):
 
     # method for repeated check for open sessions
     async def check_is_open(self, ctx):
-        try:
-            to_join = self.session_manager.get_session(ctx.channel.id)
-        except session_manager.Session_Error:
+        output = self.session_manager.is_session_open(ctx.channel.id)
+        if not output:
             await ctx.send(
                 f'Session is not open in {ctx.channel}.'
             )
-            return False
-        return True
+        return output
+
+    # catch to stop commands from processing while recording
+    # returns true if session is not paused or doesn't exist
+    def check_is_paused(self, session_id):
+        try:
+            to_join = self.session_manager.is_session_paused(session_id)
+        except session_manager.Session_Error:
+            return True
+        else:
+            return to_join
 
     async def bot_catcher(self, ctx, message, keyword):
         await ctx.send(
@@ -64,8 +75,8 @@ class session_cog(commands.Cog):
     # adds character to current cast
     @commands.command()
     async def join(self, ctx, *args):
-        # quits if no session is opened
-        if (not await self.check_is_open(ctx)):
+        # quits if no session is opened or if is recording
+        if (not await self.check_is_open(ctx) or not self.check_is_paused(ctx.channel.id)):
             return
         if len(args) > 0 and args[0] == 'bot':
             # instructions to add a tupper
@@ -107,9 +118,8 @@ class session_cog(commands.Cog):
     @commands.command()
     async def leave(self, ctx, *args):
         # quits if no session is opened
-        if (not await self.check_is_open(ctx)):
+        if (not await self.check_is_open(ctx) or not self.check_is_paused(ctx.channel.id)):
             return
-
         if len(args) > 0 and args[0] == 'bot':
             # instructions to remove a tupper
             bot_leave_instructions = (
@@ -117,9 +127,7 @@ class session_cog(commands.Cog):
                 'Send \'leave\' from your Tupper in the next 30 seconds '
                 'to leave to cast.'
             )
-
             # waits for join message from a tupper bot
-
             try:
                 bot_message = await self.bot_catcher(ctx, bot_leave_instructions, 'leave')
             except asyncio.TimeoutError:
@@ -152,8 +160,8 @@ class session_cog(commands.Cog):
 
     @commands.command()
     async def start(self, ctx):
-        # quits if channel isn't open
-        if (not await self.check_is_open(ctx)):
+        # quits if channel isn't open or is recording
+        if (not await self.check_is_open(ctx) or not self.check_is_paused(ctx.channel.id)):
             return
         # checks if the command is issued by a member of the cast
         if not self.session_manager.is_name_in_session(ctx.channel.id, ctx.author.display_name):
@@ -178,8 +186,8 @@ class session_cog(commands.Cog):
 
     @commands.command()
     async def stop(self, ctx):
-        # quits if channel isn't open
-        if (not await self.check_is_open(ctx)):
+        # quits if channel isn't open or isn't recording
+        if (not await self.check_is_open(ctx) or self.check_is_paused(ctx.channel.id)):
             return
         # checks if the command is issued by a member of the cast
         if not self.session_manager.is_name_in_session(ctx.channel.id, ctx.author.display_name):
