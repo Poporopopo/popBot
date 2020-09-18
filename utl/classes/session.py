@@ -9,7 +9,7 @@ class session:
     def __str__(self):
         sections = []
         for section in self.sections:
-            sections.append(section.__str__()) 
+            sections.append(section.__str__())
         output = {
             "ID" : self.id,
             "cast" : self.cast,
@@ -26,62 +26,38 @@ class session:
     def get_sections(self):
         return self.sections.copy()
 
-    # checks if the latest section is closed
-    def is_paused(self):
-        # returns true if no sections exist
-        if (len(self.sections) < 1):
-            return True
-        last_section = self.sections[-1]
-        return (not last_section.is_open())
-
     def is_in_cast(self, name):
         return name in self.get_cast()
 
     # takes name <string> add pushes to cast array
     def add_member(self, name):
-        if self.is_in_cast(name):
-            raise (Cast_Error("Member already added"))
-        else:
+        if not self.is_in_cast(name):
             self.cast.append(name)
 
     # takes name <string> and removes from cast array
     def remove_member(self, name):
         if self.is_in_cast(name):
             self.cast.remove(name)
-        else:
-            raise (Cast_Error("Member not in Cast"))
 
-    # creates a new section
-    def start_section(self, start_date):
-        # if the previous section is still open, will not make a new one
-        if (not self.is_paused()):
-            raise (Pause_Error("A section is already open"))
-        elif (len(self.get_cast()) < 1):
-            raise (Cast_Error("Cast cannot be empty before starting"))
-        new_section = section.section(self.cast, start_date)
+    def create_section(self, start_message, end_message):
+        new_section = section.section(self.cast, start_message, end_message)
         self.sections.append(new_section)
+        return
 
-    # closes the last section
-    def stop_section(self, stop_date):
-        # stops if:
-        # previous section is still opened
-        # no section exists
-        if self.is_paused():
-            raise (Pause_Error("No sections to close"))
+    def update_last_section_cast(self):
         last_section = self.sections[-1]
-        last_section.close(stop_date)
+        last_section.update_cast(cast)
 
-
-class Cast_Error(Exception):
-    def __init__ (self, value):
-        self.value = value
-
-    def __str__(self):
-        return (repr(self.value))
-
-class Pause_Error(Exception):
-    def __init__ (self, value):
-        self.value = value
-
-    def __str__(self):
-        return (repr(self.value))
+# class Cast_Error(Exception):
+#     def __init__ (self, value):
+#         self.value = value
+#
+#     def __str__(self):
+#         return (repr(self.value))
+#
+# class Pause_Error(Exception):
+#     def __init__ (self, value):
+#         self.value = value
+#
+#     def __str__(self):
+#         return (repr(self.value))

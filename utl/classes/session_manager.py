@@ -24,15 +24,6 @@ class session_manager:
                 return True
         return False
 
-    # boolean check for session is paused
-    # throws error if session does not exist
-    def is_session_paused(self, id):
-        try:
-            to_check = self.get_session(id)
-            return to_check.is_paused()
-        except Session_Error as error:
-            raise error
-
     # opens a session if it doesn't exist
     def open_session(self, id):
         if self.is_session_open(id):
@@ -44,7 +35,6 @@ class session_manager:
         # searches for session
         try:
             to_remove = self.get_session(id)
-            # TODO: close and save the session beforehand
             self.sessions.remove(to_remove)
         except Session_Error as error:
             raise error
@@ -53,37 +43,30 @@ class session_manager:
     # if is tries to add member to cast
     def add_member(self, id, name):
         try:
-            to_add = self.get_session(id)
+            session_to_update = self.get_session(id)
         except Session_Error as error:
             raise error
         else:
-            try:
-                to_add.add_member(name)
-            except session.Cast_Error as error:
-                raise error
+            session_to_update.add_member(name)
 
     # checks if session is opens
     # if open, tries to remove member from cast
     def remove_member(self, id, name):
         try:
-            to_remove = self.get_session(id)
+            session_to_update = self.get_session(id)
         except Session_Error as error:
             raise error
         else:
-            try:
-                to_remove.remove_member(name)
-            except session.Cast_Error as error:
-                raise error
+            session_to_update.remove_member(name)
 
-    # checks if session exists, else throws error
-    # returns boolean of if the name exists in the session
-    def is_name_in_session(self, id, name):
+    # given a valid id, tells corresponding session to create a section
+    def session_create_section(self, id, start_message, end_message):
         try:
-            to_check = self.get_session(id)
+            session_to_update = self.get_session(id)
         except Session_Error as error:
-            raise error
+            print (error)
         else:
-            return to_check.is_in_cast(name)
+            session_to_update.create_section(start_message, end_message)
 
     # checks if session exists, else throws error
     # asks session to start a section
