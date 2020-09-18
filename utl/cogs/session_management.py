@@ -45,28 +45,23 @@ class session_cog(commands.Cog):
         return output
 
     # takes two channel ids and creates a section between them, inclusive
+    @commands.command()
     async def section(self, ctx, *args):
-        if not self.check_is_open(ctx):
+        if not await self.check_is_open(ctx):
             return
         if len(args) == 2:
             try:
                 start_message = await ctx.fetch_message(int(args[0]))
                 end_message = await ctx.fetch_message(int(args[1]))
-                self.session_manager.session_create_section(start_message, end_message)
-            except HTTPException as error:
+                self.session_manager.session_create_section(ctx.channel.id, start_message, end_message)
+            except discord.HTTPException as error:
                 print (error)
-        return
-
-
-    # # catch to stop commands from processing while recording
-    # # returns true if session is not paused or doesn't exist
-    # def check_is_paused(self, session_id):
-    #     try:
-    #         to_join = self.session_manager.is_session_paused(session_id)
-    #     except session_manager.Session_Error:
-    #         return True
-    #     else:
-    #         return to_join
+        else:
+            await ctx.send(
+                "Provide the message ID for the first message and the last message."
+            )
+        print ("Sessions:",
+            self.session_manager)
 
     async def bot_catcher(self, ctx, message, keyword):
         await ctx.send(
@@ -82,9 +77,37 @@ class session_cog(commands.Cog):
         else:
             return bot_message
 
-    # adds character to current cast
+    # adds all users mentioned to the cast of the current session
     @commands.command()
-    async def join(self, ctx, *args):
+    async def join(self, ctx):
+        if not await self.check_is_open(ctx):
+            return
+        mentions =  ctx.message.mentions
+        if len(mentions) < 1:
+            await ctx.send("Mention users to add")
+            return
+        else:
+            print (mentions)
+            display_names = []
+            # for name in mentions:
+            #     display_name.append(name.display_name)
+            print (display_names)
+        print ("Sessions:",
+            self.session_manager)
+
+
+    @commands.command()
+    async def joinbot(self, ctx, *args):
+        # TODO: bot joining system
+        # pushes a message with instructions
+        # waits a set amount of time or until a close command is issued
+        # fetches messages from this send message to the close command
+        # searches messages for a bot display_name and adds that to cast
+        return
+
+
+    # adds character to current cast
+    async def old_join(self, ctx, *args):
         # quits if no session is opened or if is recording
         if (not await self.check_is_open(ctx) or not self.check_is_paused(ctx.channel.id)):
             return
